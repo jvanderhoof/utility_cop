@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
-  resources :app_environment_resources
+  resources :app_environment_resources, only: [:edit, :update]
 
   resources :app_resources
 
   resources :app_environments
 
-  resources :environments
+  resources :environments, only: [:index, :new, :create, :destroy]
 
   resources :apps
 

@@ -2,12 +2,11 @@ require 'rails_helper'
 
 RSpec.describe "app_environment_resources/edit", type: :view do
   before(:each) do
-    @app_environment_resource = assign(:app_environment_resource, AppEnvironmentResource.create!(
-      :app_environment_id => 1,
-      :app_resource_id => 1,
-      :count => 1,
-      :ami_id => "MyString"
-    ))
+    @app_environment_resource = assign(:app_environment_resource, create(:app_environment_resource,
+        app_environment: build(:app_environment, environment: build(:environment)),
+        app_resource: build(:app_resource, resource: build(:resource))
+      )
+    )
   end
 
   it "renders the edit app_environment_resource form" do

@@ -13,6 +13,7 @@
 
   <%= f.hidden_field :app_environment_id %>
   <%= f.hidden_field :app_resource_id %>
+  <p>
   <div class="field">
     <%= f.label :count %><br>
     <%= f.number_field :count %>
@@ -22,6 +23,6 @@
     <%= f.text_field :ami_id %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit 'Update' %>
   </div>
 <% end %>

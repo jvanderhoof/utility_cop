@@ -8,7 +8,14 @@
 </head>
 <body>
 
+<div style="float:left;width:200px">
+  <% App.all.each do |app| %>
+    <p><%= link_to(app.name, app) %></p>
+  <% end %>
+</div>
+<div style="float:left">
 <%= yield %>
+</div>
 
 </body>
 </html>

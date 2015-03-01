@@ -4,7 +4,7 @@ class App < ActiveRecord::Base
   has_many :app_resources
   has_many :app_environments
 
-  def current_resource_environements
+  def current_resource_environments
     @current_resource_environements ||= AppEnvironmentResource.where(["app_resource_id in (?) or app_environment_id in (?)",
       app_resources.map(&:id),
       app_environments.map(&:id)
@@ -14,7 +14,7 @@ class App < ActiveRecord::Base
   def update_resource_environments
     app_resources.each do |resource|
       app_environments.each do |environment|
-        next if current_resource_environements.include?("#{resource.id}-#{environment.id}")
+        next if current_resource_environments.include?("#{resource.id}-#{environment.id}")
         AppEnvironmentResource.create(
           app_resource_id: resource.id,
           app_environment_id: environment.id,

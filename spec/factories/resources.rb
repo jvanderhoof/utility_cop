@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :resource do
-    name "MyString"
-    cookbook_url "MyString"
+    name "Resource Name"
+    cookbook_url "Cookbook URL"
     language nil
   end
 

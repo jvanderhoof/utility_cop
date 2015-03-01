@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :app_resource do
-    app nil
+    app { build(:app)}
     resource nil
   end
 

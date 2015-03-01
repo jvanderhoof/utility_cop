@@ -1,21 +1,40 @@
+<h1><%= @app_environment.app_name_environment %></h1>
+
 <p id="notice"><%= notice %></p>
-
-<p>
-  <strong>App:</strong>
-  <%= @app_environment.app.try(:name) %>
-</p>
-
-<p>
-  <strong>Environment:</strong>
-  <%= @app_environment.environment.try(:name) %>
-</p>
 
 <p>
   <strong>Git tag:</strong>
   <%= @app_environment.git_tag %>
 </p>
 
-<p><%= link_to 'Environment Resources', app_environment_resources_path(app_environment_id: @app_environment.id) %> </p>
+<div>
+  <strong>Resources: </strong>
+  <table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Count</th>
+      <th>Image</th>
+    </tr>
+  </thead>
 
+  <tbody>
+    <% @app_environment.app_environment_resources.each do |app_environment_resource| %>
+      <tr>
+        <td>
+            <%= link_to(
+              app_environment_resource.app_resource.resource.name,
+              edit_app_environment_resource_path(app_environment_resource)
+            ) %>
+        </td>
+        <td><%= app_environment_resource.count %></td>
+        <td><%= app_environment_resource.ami_id %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+</div>
+<br />
 <%= link_to 'Edit', edit_app_environment_path(@app_environment) %> |
 <%= link_to 'Back', app_environments_path(app_id: @app_environment.app_id) %>

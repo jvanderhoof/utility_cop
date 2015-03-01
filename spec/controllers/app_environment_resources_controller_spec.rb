@@ -52,13 +52,6 @@ RSpec.describe AppEnvironmentResourcesController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it "assigns a new app_environment_resource as @app_environment_resource" do
-      get :new, {}, valid_session
-      expect(assigns(:app_environment_resource)).to be_a_new(AppEnvironmentResource)
-    end
-  end
-
   describe "GET #edit" do
     it "assigns the requested app_environment_resource as @app_environment_resource" do
       app_environment_resource = AppEnvironmentResource.create! valid_attributes

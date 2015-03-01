@@ -7,18 +7,9 @@ class EnvironmentsController < ApplicationController
     @environments = Environment.all
   end
 
-  # GET /environments/1
-  # GET /environments/1.json
-  def show
-  end
-
   # GET /environments/new
   def new
     @environment = Environment.new
-  end
-
-  # GET /environments/1/edit
-  def edit
   end
 
   # POST /environments
@@ -28,24 +19,10 @@ class EnvironmentsController < ApplicationController
 
     respond_to do |format|
       if @environment.save
-        format.html { redirect_to @environment, notice: 'Environment was successfully created.' }
+        format.html { redirect_to environments_url, notice: 'Environment was successfully created.' }
         format.json { render :show, status: :created, location: @environment }
       else
         format.html { render :new }
-        format.json { render json: @environment.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /environments/1
-  # PATCH/PUT /environments/1.json
-  def update
-    respond_to do |format|
-      if @environment.update(environment_params)
-        format.html { redirect_to @environment, notice: 'Environment was successfully updated.' }
-        format.json { render :show, status: :ok, location: @environment }
-      else
-        format.html { render :edit }
         format.json { render json: @environment.errors, status: :unprocessable_entity }
       end
     end

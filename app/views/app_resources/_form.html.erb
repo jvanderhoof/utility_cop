@@ -14,10 +14,15 @@
   <%= f.hidden_field :app_id %>
 
   <div class="field">
-    <%= f.label :resource_id %><br>
-    <%= f.select(:resource_id, Resource.all.collect {|p| [ p.name, p.id ] }, { include_blank: true }) %>
+    <%= f.label :resource_id %>
+    <%= select_or_label(
+      @app_resource.resource_id,
+      f.select(:resource_id, Resource.all.collect {|p| [ p.name, p.id ] }, { include_blank: true }),
+      f.hidden_field(:resource_id),
+      @app_resource.resource.try(:name)
+    ).html_safe %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit submit_button_message(@app_resource) %>
   </div>
 <% end %>

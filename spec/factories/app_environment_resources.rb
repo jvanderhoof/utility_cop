@@ -3,7 +3,7 @@ FactoryGirl.define do
     app_environment nil
     app_resource nil
     count 1
-    ami_id "MyString"
+    ami_id "AMI ID"
   end
 
 end

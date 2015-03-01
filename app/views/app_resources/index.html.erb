@@ -18,7 +18,7 @@
         <td><%= app_resource.resource.name %></td>
         <td><%= link_to 'Show', app_resource %></td>
         <td><%= link_to 'Edit', edit_app_resource_path(app_resource) %></td>
-        <td><%= link_to 'Destroy', app_resource, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Remove', app_resource, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

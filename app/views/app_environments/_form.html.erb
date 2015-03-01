@@ -13,15 +13,19 @@
 
   <%= f.hidden_field :app_id %>
   <div class="field">
-    <%= f.label :environment_id %><br>
-    <%#= f.text_field :environment_id %>
-    <%= f.select(:environment_id, Environment.all.collect {|p| [ p.name, p.id ] }, { include_blank: true }) %>
+    <%= f.label :environment_id %>:
+    <%= select_or_label(
+      @app_environment.environment_id,
+      f.select(:environment_id, Environment.all.collect {|p| [ p.name, p.id ] }, { include_blank: true }),
+      f.hidden_field(:environment_id),
+      @app_environment.environment.try(:name)
+    ).html_safe %>
   </div>
   <div class="field">
-    <%= f.label :git_tag %><br>
+    <%= f.label :git_tag %>:<br>
     <%= f.text_field :git_tag %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit submit_button_message(@app_environment) %>
   </div>
 <% end %>

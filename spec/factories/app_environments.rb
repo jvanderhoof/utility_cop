@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :app_environment do
-    app nil
+    app { build(:app)}
     environment nil
     git_tag "MyString"
   end
