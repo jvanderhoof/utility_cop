@@ -1,0 +1,6 @@
+<h1>Editing <%= @app_environment.app.name %> Environment</h1>
+
+<%= render 'form' %>
+
+<%= link_to 'Show', @app_environment %> |
+<%= link_to 'Back', app_environments_path(app_id: @app_environment.app_id) %>

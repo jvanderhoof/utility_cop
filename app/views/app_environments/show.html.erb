@@ -1,0 +1,21 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>App:</strong>
+  <%= @app_environment.app.try(:name) %>
+</p>
+
+<p>
+  <strong>Environment:</strong>
+  <%= @app_environment.environment.try(:name) %>
+</p>
+
+<p>
+  <strong>Git tag:</strong>
+  <%= @app_environment.git_tag %>
+</p>
+
+<p><%= link_to 'Environment Resources', app_environment_resources_path(app_environment_id: @app_environment.id) %> </p>
+
+<%= link_to 'Edit', edit_app_environment_path(@app_environment) %> |
+<%= link_to 'Back', app_environments_path(app_id: @app_environment.app_id) %>

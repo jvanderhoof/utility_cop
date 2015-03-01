@@ -1,0 +1,6 @@
+<h1>Editing <%= @app_resource.app.name %> Resource</h1>
+
+<%= render 'form' %>
+
+<%= link_to 'Show', @app_resource %> |
+<%= link_to 'Back', app_resources_path(app_id: @app_resource.app_id) %>

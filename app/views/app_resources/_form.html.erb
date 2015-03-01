@@ -1,0 +1,23 @@
+<%= form_for(@app_resource) do |f| %>
+  <% if @app_resource.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@app_resource.errors.count, "error") %> prohibited this app_resource from being saved:</h2>
+
+      <ul>
+      <% @app_resource.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :app_id %>
+
+  <div class="field">
+    <%= f.label :resource_id %><br>
+    <%= f.select(:resource_id, Resource.all.collect {|p| [ p.name, p.id ] }, { include_blank: true }) %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>App:</strong>
+  <%= @app_resource.app.name %>
+</p>
+
+<p>
+  <strong>Resource:</strong>
+  <%= @app_resource.resource.try(:name) %>
+</p>
+
+<%= link_to 'Edit', edit_app_resource_path(@app_resource) %> |
+<%= link_to 'Back', app_resources_path(app_id: @app_resource.app_id) %>

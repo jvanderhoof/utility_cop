@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing App Environment Resources</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>App environment</th>
+      <th>App resource</th>
+      <th>Count</th>
+      <th>Ami</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @app_environment.app_environment_resources.each do |app_environment_resource| %>
+      <tr>
+        <td><%= app_environment_resource.app_environment.environment.name %></td>
+        <td><%= app_environment_resource.app_resource.resource.name %></td>
+        <td><%= app_environment_resource.count %></td>
+        <td><%= app_environment_resource.ami_id %></td>
+        <td><%= link_to 'Show', app_environment_resource %></td>
+        <td><%= link_to 'Edit', edit_app_environment_resource_path(app_environment_resource) %></td>
+        <td><%= link_to 'Destroy', app_environment_resource, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New App environment resource', new_app_environment_resource_path %>

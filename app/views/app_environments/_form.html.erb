@@ -1,0 +1,27 @@
+<%= form_for(@app_environment) do |f| %>
+  <% if @app_environment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@app_environment.errors.count, "error") %> prohibited this app_environment from being saved:</h2>
+
+      <ul>
+      <% @app_environment.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :app_id %>
+  <div class="field">
+    <%= f.label :environment_id %><br>
+    <%#= f.text_field :environment_id %>
+    <%= f.select(:environment_id, Environment.all.collect {|p| [ p.name, p.id ] }, { include_blank: true }) %>
+  </div>
+  <div class="field">
+    <%= f.label :git_tag %><br>
+    <%= f.text_field :git_tag %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

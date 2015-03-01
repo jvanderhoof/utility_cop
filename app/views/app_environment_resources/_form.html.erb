@@ -1,0 +1,27 @@
+<%= form_for(@app_environment_resource) do |f| %>
+  <% if @app_environment_resource.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@app_environment_resource.errors.count, "error") %> prohibited this app_environment_resource from being saved:</h2>
+
+      <ul>
+      <% @app_environment_resource.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :app_environment_id %>
+  <%= f.hidden_field :app_resource_id %>
+  <div class="field">
+    <%= f.label :count %><br>
+    <%= f.number_field :count %>
+  </div>
+  <div class="field">
+    <%= f.label :ami_id %><br>
+    <%= f.text_field :ami_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,22 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @app.name %>
+</p>
+
+<p>
+  <strong>Git repo:</strong>
+  <%= @app.git_repo %>
+</p>
+
+<p>
+  <strong>Language:</strong>
+  <%= @app.language.try(:name) %>
+</p>
+
+<p><%= link_to('Environments', app_environments_path(app_id: @app)) %></p>
+<p><%= link_to('Resources', app_resources_path(app_id: @app)) %></p>
+
+<%= link_to 'Edit', edit_app_path(@app) %> |
+<%= link_to 'Back', apps_path %>
