@@ -5,7 +5,6 @@
 <table>
   <thead>
     <tr>
-      <th>App</th>
       <th>Environment</th>
       <th>Git tag</th>
       <th colspan="3"></th>
@@ -15,7 +14,6 @@
   <tbody>
     <% @app.app_environments.each do |app_environment| %>
       <tr>
-        <td><%= app_environment.app.name %></td>
         <td><%= app_environment.environment.try(:name) %></td>
         <td><%= app_environment.git_tag %></td>
         <td><%= link_to 'Show', app_environment %></td>
