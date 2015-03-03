@@ -10,7 +10,6 @@ RSpec.describe "app_environments/index", type: :view do
 
   it "renders a list of app_environments" do
     render
-    assert_select "tr>td", :text => build(:app).name, :count => 2
     assert_select "tr>td", :text => build(:environment).name, :count => 2
     assert_select "tr>td", :text => build(:app_environment).git_tag, :count => 2
   end

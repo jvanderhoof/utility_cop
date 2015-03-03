@@ -11,20 +11,8 @@ RSpec.describe EnvironmentsController, type: :routing do
       expect(:get => "/environments/new").to route_to("environments#new")
     end
 
-    it "routes to #show" do
-      expect(:get => "/environments/1").to route_to("environments#show", :id => "1")
-    end
-
-    it "routes to #edit" do
-      expect(:get => "/environments/1/edit").to route_to("environments#edit", :id => "1")
-    end
-
     it "routes to #create" do
       expect(:post => "/environments").to route_to("environments#create")
-    end
-
-    it "routes to #update" do
-      expect(:put => "/environments/1").to route_to("environments#update", :id => "1")
     end
 
     it "routes to #destroy" do
