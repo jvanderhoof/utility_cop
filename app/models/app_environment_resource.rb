@@ -8,4 +8,8 @@ class AppEnvironmentResource < ActiveRecord::Base
       app_resource.resource.name
     ].join(' ')
   end
+
+  def ami
+    (ami_id.present?) ? ami_id : app_resource.ami
+  end
 end

@@ -9,4 +9,9 @@ class AppResource < ActiveRecord::Base
   def set_app_resource_environments
     app.update_resource_environments
   end
+
+  def ami
+    (ami_id.present?) ? ami_id : resource.ami
+  end
+
 end
