@@ -12,10 +12,11 @@ RSpec.describe "app_environments/edit", type: :view do
 
       assert_select "input#app_environment_app_id[name=?]", "app_environment[app_id]"
 
-      #TODO - check for lack of select
-      #assert_select "select#app_environment_environment_id[name=?]", "app_environment[environment_id]"
+      assert_select "select#app_environment_environment_id[name=?]", "app_environment[environment_id]", 0
 
       assert_select "input#app_environment_git_tag[name=?]", "app_environment[git_tag]"
+
+      assert_select "input#app_environment_domain[name=?]", "app_environment[domain]"
     end
   end
 end

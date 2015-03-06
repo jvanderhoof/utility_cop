@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Credential:</strong>
+  <%= @app_environment_credential.credential_id %>
+</p>
+
+<p>
+  <strong>App environment:</strong>
+  <%= @app_environment_credential.app_environment_id %>
+</p>
+
+<p>
+  <strong>Encrypted value:</strong>
+  <%= @app_environment_credential.encrypted_value %>
+</p>
+
+<p>
+  <strong>Text value:</strong>
+  <%= @app_environment_credential.text_value %>
+</p>
+
+<%= link_to 'Edit', edit_app_environment_credential_path(@app_environment_credential) %> |
+<%= link_to 'Back', app_environment_credentials_path %>

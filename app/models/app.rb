@@ -3,6 +3,7 @@ class App < ActiveRecord::Base
 
   has_many :app_resources
   has_many :app_environments
+  has_many :app_credentials
 
   def current_resource_environments
     AppEnvironmentResource.where(["app_resource_id in (?) or app_environment_id in (?)",

@@ -11,10 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150304114344) do
+ActiveRecord::Schema.define(version: 20150306191737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "app_credentials", force: :cascade do |t|
+    t.integer  "credential_id"
+    t.integer  "app_id"
+    t.string   "encrypted_value"
+    t.string   "text_value"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  create_table "app_environment_credentials", force: :cascade do |t|
+    t.integer  "credential_id"
+    t.integer  "app_environment_id"
+    t.string   "encrypted_value"
+    t.string   "text_value"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
 
   create_table "app_environment_resources", force: :cascade do |t|
     t.integer  "app_environment_id"
@@ -34,6 +52,7 @@ ActiveRecord::Schema.define(version: 20150304114344) do
     t.string   "git_tag"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.string   "domain"
   end
 
   add_index "app_environments", ["app_id"], name: "index_app_environments_on_app_id", using: :btree
@@ -59,6 +78,12 @@ ActiveRecord::Schema.define(version: 20150304114344) do
   end
 
   add_index "apps", ["language_id"], name: "index_apps_on_language_id", using: :btree
+
+  create_table "credentials", force: :cascade do |t|
+    t.string   "key_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "environments", force: :cascade do |t|
     t.string   "name"

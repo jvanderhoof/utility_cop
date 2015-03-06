@@ -13,6 +13,8 @@ RSpec.describe "app_resources/new", type: :view do
       assert_select "input#app_resource_app_id[name=?]", "app_resource[app_id]"
 
       assert_select "select#app_resource_resource_id[name=?]", "app_resource[resource_id]"
+
+      assert_select "input#app_resource_ami_id[name=?]", "app_resource[ami_id]"
     end
   end
 end

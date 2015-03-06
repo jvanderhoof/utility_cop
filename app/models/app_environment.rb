@@ -3,6 +3,7 @@ class AppEnvironment < ActiveRecord::Base
   belongs_to :environment
 
   has_many :app_environment_resources, dependent: :destroy
+  has_many :app_environment_credentials, dependent: :destroy
 
   after_create :set_app_resource_environments
 

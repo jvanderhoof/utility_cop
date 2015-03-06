@@ -6,7 +6,8 @@
   <thead>
     <tr>
       <th>Environment</th>
-      <th>Git tag</th>
+      <th>Domain</th>
+      <th>Git Tag</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -15,6 +16,7 @@
     <% @app.app_environments.each do |app_environment| %>
       <tr>
         <td><%= app_environment.environment.try(:name) %></td>
+        <td><%= app_environment.domain %></td>
         <td><%= app_environment.git_tag %></td>
         <td><%= link_to 'Show', app_environment %></td>
         <td><%= link_to 'Edit', edit_app_environment_path(app_environment) %></td>

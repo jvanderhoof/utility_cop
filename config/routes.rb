@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  resources :app_credentials
+
+  resources :app_environment_credentials
+
+  resources :credentials
+
+  resources :resources
+
   resources :app_environment_resources, only: [:edit, :update]
 
   resources :app_resources

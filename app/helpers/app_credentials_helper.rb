@@ -1,0 +1,2 @@
+module AppCredentialsHelper
+end

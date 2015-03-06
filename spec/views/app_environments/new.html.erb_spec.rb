@@ -15,6 +15,8 @@ RSpec.describe "app_environments/new", type: :view do
       assert_select "select#app_environment_environment_id[name=?]", "app_environment[environment_id]"
 
       assert_select "input#app_environment_git_tag[name=?]", "app_environment[git_tag]"
+
+      assert_select "input#app_environment_domain[name=?]", "app_environment[domain]"
     end
   end
 end

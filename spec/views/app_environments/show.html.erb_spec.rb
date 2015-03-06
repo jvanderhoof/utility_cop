@@ -10,5 +10,6 @@ RSpec.describe "app_environments/show", type: :view do
     expect(rendered).to match(build(:app).name)
     expect(rendered).to match(build(:environment).name)
     expect(rendered).to match(build(:app_environment).git_tag)
+    expect(rendered).to match(build(:app_environment).domain)
   end
 end

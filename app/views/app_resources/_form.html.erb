@@ -22,6 +22,11 @@
       @app_resource.resource.try(:name)
     ).html_safe %>
   </div>
+    <div class="field">
+    <%= f.label :ami_id %><br>
+    <%= f.text_field :ami_id %>
+  </div>
+
   <div class="actions">
     <%= f.submit submit_button_message(@app_resource) %>
   </div>

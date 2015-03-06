@@ -101,6 +101,16 @@ Vagrant.configure(2) do |config|
     rm /tmp/ruby-2.2.0.tar.gz && rm -rf /tmp/ruby-2.2.0
   SHELL
 
+   # Install Redis
+  config.vm.provision "shell", inline: <<-SHELL
+    sudo apt-get install -y build-essential tcl
+    wget -P /tmp/ http://download.redis.io/releases/redis-2.8.19.tar.gz
+    cd /tmp && tar -zxvf redis*
+    cd /tmp/redis* && make && sudo make install
+    cd /tmp/redis* && echo -n | sudo utils/install_server.sh
+    rm -rf /tmp/redis*
+  SHELL
+
   config.vm.provision "shell", inline: 'gem install bundler nokogiri foreman --no-rdoc --no-ri'
   config.vm.provision "shell", inline: 'echo "cd /home/vagrant/app" >> /home/vagrant/.bashrc'
 end

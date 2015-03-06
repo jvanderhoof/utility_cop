@@ -3,6 +3,7 @@ FactoryGirl.define do
     app { build(:app)}
     environment nil
     git_tag "MyString"
+    domain 'test.domain.com'
   end
 
 end

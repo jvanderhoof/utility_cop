@@ -24,6 +24,10 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+gem 'attr_encrypted'
+gem 'sidekiq'
+gem 'aws-sdk'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -35,6 +39,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # add a Javascript runtime environment
 gem 'therubyracer'
+
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -50,5 +56,8 @@ group :development, :test do
   gem 'shoulda', require: false
   gem 'factory_girl_rails'
   gem 'database_cleaner'
+  gem 'simplecov', require: false
+
+  gem 'dotenv-rails'
 end
 
