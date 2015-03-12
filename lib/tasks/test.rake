@@ -30,6 +30,8 @@ namespace :test do
     ec2_client.describe_internet_gateways(filters: [{name: 'attachment.vpc-id', values: [vpc_id]}]).internet_gateways.first || begin
       internet_gateway = ec2_client.create_internet_gateway.internet_gateway
       ec2_client.attach_internet_gateway(internet_gateway_id: internet_gateway.internet_gateway_id, vpc_id: vpc_id)
+      name_resource(internet_gateway.internet_gateway_id, 'GZ-Default-Gateway')
+      internet_gateway
     end
   end
 
@@ -44,35 +46,79 @@ namespace :test do
     ]
   end
 
-  def launch_instance
-    #ec2_resource.
+  def vpc
+    @vpc ||= Aws::EC2::Vpc.new(find_or_create_vpc('GZ-Default').vpc_id, client: ec2_client)
   end
 
   def find_or_create_vpc(name)
     ec2_client.describe_vpcs(filters: name_filter(name)).vpcs.first || begin
       resp = ec2_client.create_vpc(cidr_block: "10.0.0.0/16", )
       name_resource(resp.vpc.vpc_id, name)
+
+      # enable dns support & hostnames
+      [:enable_dns_support, :enable_dns_hostnames].each do |key|
+        ec2_client.modify_vpc_attribute(vpc_id: resp.vpc.vpc_id, key.to_sym => {value: true})
+      end
+
       resp.vpc
-      ec2_client.modify_vpc_attribute(
-                          vpc_id: resp.vpc.vpc_id,
-                          enable_dns_support: { value: true },
-                          enable_dns_hostnames: { value: true },
-                        )
     end
   end
 
-  task :update_vpc, [:environment] do
-    vpc = find_or_create_vpc('GZ-Default')
-    #vpc.modify_attribute(enable_dns_support: { value: true },
-    #                      enable_dns_hostnames: { value: true })
-
-    [:enable_dns_support, :enable_dns_hostnames].each do |key|
-      ec2_client.modify_vpc_attribute(vpc_id: vpc.vpc_id, key.to_sym => {value: true})
+  task :internet_gateways, [:environment] do
+    vpc = Aws::EC2::Vpc.new(find_or_create_vpc('GZ-Default').vpc_id, client: ec2_client).in
+    vpc.internet_gateways.each do |internet_gateway|
+      puts internet_gateway.inspect
     end
-      #                    vpc_id: vpc.vpc_id,
-      #                    enable_dns_support: { value: true },
-      #                    enable_dns_hostnames: { value: true }
-      #                  )
+  end
+
+  def name_tags(name)
+    [{key: 'Name', value: name}]
+  end
+
+  def launch_instance
+    resp = ec2_client.run_instances(
+      image_id: 'ami-b46439dc',
+      min_count: 1,
+      max_count: 1,
+      key_name: 'aws-2015-01-21',
+      instance_type: 't1.micro',
+      network_interfaces: [{
+        device_index: 0,
+        associate_public_ip_address: true,
+        subnet_id: ec2_client.describe_subnets(filters: name_filter('GZ Public Subnet')).subnets.first.subnet_id,
+        groups: ['sg-53841237']
+      }]
+    )
+    puts "launched....."
+    #puts instance.inspect
+    ec2_client.wait_until(:instance_running, instance_ids: resp.instances.map(&:instance_id))
+
+    resp.instances.map(&:instance_id).each do |instance_id|
+      puts "instance: #{instance_id}"
+      instance = Aws::EC2::Instance.new(instance_id, client: ec2_client)
+      puts " -- (#{instance.id}) #{instance.public_ip_address}"
+    end
+
+  end
+
+  task :new_instance, [:environment] do
+    launch_instance
+  end
+
+  task :route_table, [:environment] do
+    route_table = vpc.create_route_table
+    route_table.create_tags(tags: name_tags('GZ-Route-Table'))
+
+    subnet = ec2_client.describe_subnets(filters: name_filter('GZ Public Subnet')).subnets.first
+    route_table.associate_with_subnet(subnet_id: subnet.subnet_id)
+
+    route_table.create_route(destination_cidr_block: '0.0.0.0/0', gateway_id: vpc.internet_gateways.first.internet_gateway_id)
+  end
+
+  task :name_gateway, [:environment] do
+    vpc = find_or_create_vpc('GZ-Default')
+    internet_gateway = find_or_create_gateway(vpc.vpc_id)
+    name_resource(internet_gateway.internet_gateway_id, 'GZ-Default-Gateway')
   end
 
   task :gateway, [:environment] do
