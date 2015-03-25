@@ -10,7 +10,6 @@ RSpec.describe "app_resources/index", type: :view do
 
   it "renders a list of app_resources" do
     render
-    assert_select "tr>td", :text => build(:app).name, :count => 2
     assert_select "tr>td", :text => build(:resource).name, :count => 2
   end
 end
