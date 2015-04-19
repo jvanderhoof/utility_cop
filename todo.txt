@@ -1,0 +1,6 @@
+Create Defaul† VPC
+Create ELB, in VPC
+Create RDS instance
+Create EC2 from AMI
+Deploy code to EC2
+Add EC2 to ELB

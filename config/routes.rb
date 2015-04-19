@@ -1,4 +1,12 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
+  mount Sidekiq::Web => '/sidekiq'
+
+  resources :ami_builder, only: [:new, :create]
+
+  resources :settings
+
   resources :app_credentials
 
   resources :app_environment_credentials
@@ -16,6 +24,8 @@ Rails.application.routes.draw do
   resources :environments, only: [:index, :new, :create, :destroy]
 
   resources :apps
+
+  resources :output_logs, only: [:show]
 
   root 'apps#index'
   # The priority is based upon order of creation: first created -> highest priority.

@@ -22,6 +22,10 @@
     <%= f.label :ami_id %><br>
     <%= f.text_field :ami_id %>
   </div>
+  <div class="field">
+    <%= f.label :instance_type %><br>
+    <%= f.select :instance_type, options_for_select(aws_instance_types.map{|i| [i, i]}), include_blank: true %>
+  </div>
   <div class="actions">
     <%= f.submit 'Update' %>
   </div>

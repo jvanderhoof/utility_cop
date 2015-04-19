@@ -9,9 +9,12 @@
 <body>
 
 <div style="float:left;width:200px">
+  <strong>Applications</strong>:<br />
   <% App.all.each do |app| %>
-    <p><%= link_to(app.name, app) %></p>
+    &nbsp;&nbsp;<%= link_to(app.name, app) %><br />
   <% end %>
+  <p><%= link_to 'AMI Builder', new_ami_builder_path %>
+  <p><%= link_to 'Monitoring', sidekiq_web_path %></p>
 </div>
 <div style="float:left">
 <%= yield %>

@@ -29,6 +29,11 @@ gem 'sidekiq'
 gem 'aws-sdk'
 #gem 'fog-aws'
 
+gem 'quiet_assets', group: :development
+gem 'sinatra', :require => nil
+
+#gem 'gemnasium-parser'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

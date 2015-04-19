@@ -1,119 +1,193 @@
-class AwsEnvironment
-  attr_accessor :prefix
+class FigTemplate
+  class << self
+    def web(links)
+      %{
+  build: .
+  command: bin/rails server --port 3000 --binding 0.0.0.0
+  ports:
+    - \"3000:3000\"
+  links:
+#{links.map{|i| "\t\t- #{i}"}.join("\n")}
+  volumes:
+    - .:/app
+}
+    end
 
-  def initialize(prefix)
-    self.prefix = prefix
-    route_table
-  end
+    def redis
+      %{
+  image: redis:2.8
+  ports:
+    - \"6379:6379\"
+}
+    end
 
-  def vpc
-    vpc_name = "#{prefix}-Default"
-    @vpc ||= begin
-      vpc_struct = ec2_client.describe_vpcs(filters: name_search_filters(vpc_name)).vpcs.first
-      if vpc_struct
-        aws_object_from_id('Vpc', vpc_struct.vpc_id)
-      else
-        vpc_struct = ec2_client.create_vpc(cidr_block: "10.0.0.0/16")
-        puts vpc_struct.inspect
-        vpc_obj = aws_object_from_id('Vpc', vpc_struct.vpc.vpc_id)
-        vpc_obj.create_tags(tags: name_tags(vpc_name))
-        [:enable_dns_support, :enable_dns_hostnames].each do |key|
-          vpc_obj.modify_attribute(key => {value: true})
-        end
-        vpc_obj
+    def queue(resources, links)
+      %{
+  build: .
+  command: #{resources.include?(:sidekiq_queue) ? 'sidekiq' : 'bin/resque work'}
+  links:
+#{links.map{|i| "\t\t- #{i}"}.join("\n")}
+  volumes:
+    - .:/app
+}
+    end
+
+    def database(resources)
+      if resources.include?(:postgres)
+        postgres
+      elsif resources.include?(:mysql)
+        mysql
       end
     end
+
+    def mysql
+      %{
+  image: mysql:5.6.23
+  ports:
+    - "3306:3306"
+}
+    end
+
+    def postgres
+      %{
+  image: postgres:9.4.1
+  ports:
+    - "5432:5432"
+}
+    end
+
   end
-
-  def subnet
-    subnet_name = "#{prefix} Public Subnet"
-    @subnet ||= begin
-      subnet_struct = ec2_client.describe_subnets(filters: vpc_scoped_name_filters(subnet_name)).subnets.first
-      if subnet_struct
-        aws_object_from_id('Subnet', subnet_struct.subnet_id)
-      else
-        subnet = vpc.create_subnet(cidr_block: "10.0.0.0/24", availability_zone: 'us-east-1e')
-        subnet.create_tags(tags: name_tags(subnet_name))
-        subnet
-      end
-    end
-  end
-
-  def gateway
-    gateway_name = "#{prefix}-Default-Gateway"
-    @gateway ||= begin
-      gateway_struct = ec2_client.describe_internet_gateways(filters: [{name: 'attachment.vpc-id', values: [vpc.id]}]).internet_gateways.first
-      if gateway_struct
-        aws_object_from_id('InternetGateway', gateway_struct.internet_gateway_id)
-      else
-        internet_gateway = ec2_client.create_internet_gateway.internet_gateway
-        vpc.attach_internet_gateway(internet_gateway_id: internet_gateway.internet_gateway_id)
-        ig = aws_object_from_id('InternetGateway', internet_gateway.internet_gateway_id)
-        ig.create_tags(tags: name_tags(gateway_name))
-        ig
-      end
-    end
-  end
-
-  def route_table
-    route_table_name = "#{prefix}-Route-Table"
-    @route_table ||= begin
-      route_table_struct = ec2_client.describe_route_tables(filters: vpc_scoped_name_filters(route_table_name)).route_tables.first
-      if route_table_struct
-        aws_object_from_id('RouteTable', route_table_struct.route_table_id)
-      else
-        route_table = vpc.create_route_table
-        route_table.create_tags(tags: name_tags(route_table_name))
-        route_table.associate_with_subnet(subnet_id: subnet.id)
-        route_table.create_route(destination_cidr_block: '0.0.0.0/0', gateway_id: gateway.id)
-        route_table
-      end
-    end
-  end
-
-  #private
-
-    def aws_object_from_id(resource_type, resource_id)
-      "Aws::EC2::#{resource_type}".constantize.new(resource_id, client: ec2_client)
-    end
-
-    def time_this(msg)
-      start_time = Time.now
-      yield
-      puts "#{msg} took: #{Time.now - start_time}"
-    end
-
-    def credentials
-      @creds ||= Aws::Credentials.new(ENV['AWS_ACCESS_KEY'], ENV['AWS_SECRET_ACCESS_KEY'])
-    end
-
-    def ec2_client
-      @ec2_client ||= Aws::EC2::Client.new(region: 'us-east-1', credentials: credentials)
-    end
-
-    def vpc_scoped_name_filters(name)
-      name_search_filters(name).push({name: 'vpc-id', values: [vpc.id]})
-    end
-
-    def name_search_filters(name)
-      [
-        {name: 'tag-key', values: ['Name']},
-        {name: 'tag-value', values:[name]}
-      ]
-    end
-
-  def name_tags(name)
-    [{key: 'Name', value: name}]
-  end
-
-
-
 end
 
-namespace :test do
+class DockerfileTemplate
+  class << self
+    def template
+      %{
+FROM ubuntu:14.04
+
+RUN apt-get update -qq && apt-get install -y git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libcurl4-openssl-dev libffi-dev curl <%= @libraries %>
+
+RUN cd /tmp; \\
+curl -O http://cache.ruby-lang.org/pub/ruby/<%= @ruby_family %>/ruby-<%= @ruby_version %>.tar.gz; \\
+sudo chown default: *.tar.gz; \\
+tar xvzf *.tar.gz; rm -f *.tar.gz; \
+cd ruby*; \\
+./configure; \\
+make; \\
+make install; \\
+cd; \\
+rm -rf /tmp/ruby*
+
+RUN gem install bundler pry --no-rdoc --no-ri
+
+ENV APP_HOME /app
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
+
+ADD Gemfile* $APP_HOME/
+RUN bundle install
+
+ADD . $APP_HOME
+}
+    end
+  end
+end
+
+class DockerfileBuilder
+  class << self
+    def from_file(file_path)
+      from_string(IO.read(file_path))
+    end
+
+    def from_string(str)
+      ruby_version = str.match(/ruby ['|"]([\d.]+)['|"]/)[1]
+      ruby_family = ruby_version.match(/^(\d\.\d)/)[1]
+      dependencies = get_dependencies(Gemnasium::Parser.gemfile(str).dependencies.map(&:name))
+      puts dependencies.inspect
+      build_files(ruby_version, ruby_family, dependencies)
+    end
+
+    def build_files(ruby_version, ruby_family, dependencies)
+      build_dockerfile(ruby_version, ruby_family, dependencies[:libraries].join(' '))
+      build_fig(dependencies[:resources])
+    end
+
+    def build_fig(resources)
+      links = []
+      config = {}
+
+      if resources.any?{|resource| [:mysql, :postgres].include?(resource)}
+        config[:db] = FigTemplate.database(resources)
+        links << 'db'
+      end
+      if resources.include?(:redis)
+        config[:redis] = FigTemplate.redis
+        links << 'redis'
+      end
+      if resources.any?{|resource| [:sidekiq_queue, :resque_queue].include?(resource)}
+        config[:queue] = FigTemplate.queue(resources, links)
+      end
+
+      config[:web] = FigTemplate.web(links)
+
+      File.open('docker-compose-test.yml', 'w+') do |f|
+        config.each do |key, value|
+          f.write("#{key}:#{value}\n")
+        end
+      end
+    end
+
+    def build_dockerfile(ruby_version, ruby_family, libraries)
+      puts libraries.inspect
+      @ruby_version, @ruby_family, @libraries = ruby_version, ruby_family, libraries
+      puts @libraries.inspect
+      File.open('Dockerfile-test', "w+") do |f|
+        f.write(ERB.new(DockerfileTemplate.template).result(binding))
+      end
+    end
+
+    def get_dependencies(gems)
+      gems.each_with_object({resources: [], libraries: []}) do |gem_name, hsh|
+        case gem_name
+        when 'pg'
+          hsh[:libraries] << 'libpq-dev'
+          hsh[:resources] << :postgres
+        when 'mysql2'
+          hsh[:libraries] << 'libmysqlclient-dev'
+          hsh[:resources] << :mysql
+        when 'coffee-script', 'coffee-rails'
+          hsh[:libraries] << 'nodejs'
+        when 'nokogiri', 'rails'
+          hsh[:libraries] << 'libxml2-dev libxslt1-dev'
+        when 'sidekiq', 'resque', 'redis'
+          hsh[:resources] << :redis
+          hsh[:resources] << "#{gem_name}_queue".to_sym unless gem_name == 'redis'
+        when 'capybara-webkit'
+          hsh[:libraries] << 'libqt4-webkit libqt4-dev xvfb'
+        end
+      end
+    end
+  end
+end
+
+
+namespace :play do
+  task :packer_test, [:environment] do
+    BuildPackerAmi.new('ruby-2.2.json').process
+  end
+
   task :test, [:environment] do
     env = AwsEnvironment.new('GZ')
     puts env.vpc_scoped_name_filters('test').inspect
+  end
+
+  task :parse_gems, [:environment] do
+    DockerfileBuilder.from_file('Gemfile-test')
+    #s = IO.read('Gemfile')
+    #ruby_version = s.match(/ruby ['|"]([\d.]+)['|"]/)[1]
+    #puts "ruby version: #{ruby_version}"
+    #gems = Gemnasium::Parser.gemfile(s).dependencies.map(&:name)
+    #puts "gems: #{gems.inspect}"
   end
 
 =begin

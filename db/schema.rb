@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150306191737) do
+ActiveRecord::Schema.define(version: 20150419172806) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20150306191737) do
     t.string   "ami_id"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+    t.string   "instance_type"
   end
 
   add_index "app_environment_resources", ["app_environment_id"], name: "index_app_environment_resources_on_app_environment_id", using: :btree
@@ -97,6 +98,15 @@ ActiveRecord::Schema.define(version: 20150306191737) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "output_logs", force: :cascade do |t|
+    t.string   "name"
+    t.text     "log",        default: ""
+    t.string   "error"
+    t.text     "stacktrace"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
   create_table "resource_builds", force: :cascade do |t|
     t.integer  "resource_id"
     t.string   "cookbook_version"
@@ -119,6 +129,16 @@ ActiveRecord::Schema.define(version: 20150306191737) do
   end
 
   add_index "resources", ["language_id"], name: "index_resources_on_language_id", using: :btree
+
+  create_table "settings", force: :cascade do |t|
+    t.string   "key"
+    t.string   "value"
+    t.integer  "app_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "settings", ["app_id"], name: "index_settings_on_app_id", using: :btree
 
   add_foreign_key "app_environment_resources", "app_environments"
   add_foreign_key "app_environment_resources", "app_resources"

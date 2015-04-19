@@ -74,6 +74,7 @@ Vagrant.configure(2) do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
 
+=begin
   # Install Postgres 9.3
   config.vm.provision "shell", inline: <<-SHELL
     echo 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' >> /etc/apt/sources.list.d/pgdg.list
@@ -90,17 +91,17 @@ Vagrant.configure(2) do |config|
     sudo /etc/init.d/postgresql restart
     rm /tmp/pg_hba.conf
   SHELL
-
+=end
   # Install Ruby 2.2.0
   config.vm.provision "shell", inline: <<-SHELL
     sudo apt-get update -qq
     sudo apt-get install -y git-core curl build-essential bison openssl libreadline6 libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev ssl-cert subversion libffi-dev wget libpq-dev
-    wget -P /tmp/ http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.0.tar.gz
-    cd /tmp && tar -zxvf ruby-2.2.0.tar.gz
-    cd /tmp/ruby-2.2.0 && ./configure && make && sudo make install
-    rm /tmp/ruby-2.2.0.tar.gz && rm -rf /tmp/ruby-2.2.0
+    wget -P /tmp/ http://cache.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p645.tar.gz
+    cd /tmp && tar -zxvf ruby-2.0.0-p645.tar.gz
+    cd /tmp/ruby-2.0.0-p645 && ./configure && make && sudo make install
+    rm /tmp/ruby-2.0.0-p645.tar.gz && rm -rf /tmp/ruby-2.0.0-p645
   SHELL
-
+=begin
    # Install Redis
   config.vm.provision "shell", inline: <<-SHELL
     sudo apt-get install -y build-essential tcl
@@ -113,4 +114,5 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "shell", inline: 'gem install bundler nokogiri foreman --no-rdoc --no-ri'
   config.vm.provision "shell", inline: 'echo "cd /home/vagrant/app" >> /home/vagrant/.bashrc'
+=end
 end

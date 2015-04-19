@@ -4,6 +4,8 @@ class Resource < ActiveRecord::Base
   has_many :app_resources, dependent: :destroy
   has_many :resource_builds
 
+  default_scope { order(:name) }
+
   def ami
     ami_id
   end

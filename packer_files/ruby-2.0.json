@@ -1,0 +1,43 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "instance_language_version": "",
+    "instance_language": ""
+  },
+
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "us-east-1",
+      "source_ami": "ami-e63b3e8e",
+      "instance_type": "m3.medium",
+      "ssh_username": "ubuntu",
+      "ssh_timeout": "5m",
+      "ami_name": "jv-ruby-2.0.0-base_{{timestamp}}",
+      "tags": {
+        "os": "ubuntu-14.04",
+        "language": "ruby",
+        "language_version": "2.0.0",
+        "language_and_version": "ruby-2.0.0"
+      }
+    }
+  ],
+  "provisioners" : [
+    {
+      "type": "shell",
+      "inline": [
+        "sleep 15",
+        "sudo apt-get update",
+        "sudo apt-get upgrade -y",
+        "sudo apt-get install -yf git-core curl build-essential bison openssl libreadline6 libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev autoconf libc6-dev ssl-cert subversion libffi-dev wget libpq-dev",
+        "wget -P /tmp/ http://cache.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p645.tar.gz",
+        "cd /tmp && tar -zxvf ruby-2.0.0-p645.tar.gz",
+        "cd /tmp/ruby-2.0.0-p645 && ./configure && make && sudo make install",
+        "rm /tmp/ruby-2.0.0-p645.tar.gz && rm -rf /tmp/ruby-2.0.0-p645"
+      ]
+    }
+  ]
+}

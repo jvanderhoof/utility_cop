@@ -31,6 +31,6 @@ class AppEnvironmentResourcesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def app_environment_resource_params
-      params.require(:app_environment_resource).permit(:app_environment_id, :app_resource_id, :count, :ami_id)
+      params.require(:app_environment_resource).permit(:app_environment_id, :app_resource_id, :count, :ami_id, :instance_type)
     end
 end

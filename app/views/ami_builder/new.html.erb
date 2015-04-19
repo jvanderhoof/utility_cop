@@ -1,0 +1,10 @@
+<h1>AMI Build</h1>
+
+<%= form_tag ami_builder_index_path do %>
+  <p>
+    <%= label_tag :packer_file, 'Packer File' %>:
+    <%= select_tag :builder_file, options_for_select(@builders), include_blank: true %>
+  </p>
+
+  <p><%= submit_tag "Create AMI" %></p>
+<% end %>

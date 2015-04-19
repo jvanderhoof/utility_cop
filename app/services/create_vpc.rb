@@ -1,5 +1,9 @@
 class CreateVpc
-  def create_default_vpc(name='gz-default')
+  def perform
+    create_default_vpc
+  end
 
+  def create_default_vpc
+    env = AwsEnvironment.new('Test')
   end
 end
