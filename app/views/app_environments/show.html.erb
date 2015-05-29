@@ -43,5 +43,11 @@
 
 </div>
 <br />
+
+<div>
+  <strong>Environment Variables</strong>
+  <%= render "app_environment_credentials/index", app_environment_credentials: @app_environment.app_environment_credentials %>
+</div>
+
 <%= link_to 'Edit', edit_app_environment_path(@app_environment) %> |
 <%= link_to 'Back', app_environments_path(app_id: @app_environment.app_id) %>

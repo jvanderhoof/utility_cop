@@ -12,6 +12,9 @@ class AppEnvironment < ActiveRecord::Base
   end
 
   def set_app_resource_environments
-    app.update_resource_environments
+    app.app_resources.each do |app_resource|
+      app_environment_resources.create(app_environment: self, app_resource: app_resource, count: 0)
+    end
   end
+
 end

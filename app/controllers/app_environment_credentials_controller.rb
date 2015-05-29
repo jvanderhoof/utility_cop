@@ -3,19 +3,19 @@ class AppEnvironmentCredentialsController < ApplicationController
 
   # GET /app_environment_credentials
   # GET /app_environment_credentials.json
-  def index
-    @app_environment_credentials = AppEnvironmentCredential.all
-  end
+  #def index
+  #  @app_environment_credentials = AppEnvironmentCredential.all
+  #end
 
   # GET /app_environment_credentials/1
   # GET /app_environment_credentials/1.json
-  def show
-  end
+  #def show
+  #end
 
   # GET /app_environment_credentials/new
-  def new
-    @app_environment_credential = AppEnvironmentCredential.new
-  end
+  #def new
+  #  @app_environment_credential = AppEnvironmentCredential.new
+  #end
 
   # GET /app_environment_credentials/1/edit
   def edit
@@ -23,43 +23,43 @@ class AppEnvironmentCredentialsController < ApplicationController
 
   # POST /app_environment_credentials
   # POST /app_environment_credentials.json
-  def create
-    @app_environment_credential = AppEnvironmentCredential.new(app_environment_credential_params)
+  #def create
+  #  @app_environment_credential = AppEnvironmentCredential.new(app_environment_credential_params)
 
-    respond_to do |format|
-      if @app_environment_credential.save
-        format.html { redirect_to @app_environment_credential, notice: 'App environment credential was successfully created.' }
-        format.json { render :show, status: :created, location: @app_environment_credential }
-      else
-        format.html { render :new }
-        format.json { render json: @app_environment_credential.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+  #  respond_to do |format|
+  #    if @app_environment_credential.save
+  #      format.html { redirect_to @app_environment_credential, notice: 'App environment credential was successfully created.' }
+  #      format.json { render :show, status: :created, location: @app_environment_credential }
+  #    else
+  #      format.html { render :new }
+  #      format.json { render json: @app_environment_credential.errors, status: :unprocessable_entity }
+  #    end
+  #  end
+  #end
 
   # PATCH/PUT /app_environment_credentials/1
   # PATCH/PUT /app_environment_credentials/1.json
   def update
     respond_to do |format|
       if @app_environment_credential.update(app_environment_credential_params)
-        format.html { redirect_to @app_environment_credential, notice: 'App environment credential was successfully updated.' }
-        format.json { render :show, status: :ok, location: @app_environment_credential }
+        format.html { redirect_to @app_environment_credential.app_environment, notice: 'App environment credential was successfully updated.' }
+        #format.json { render :show, status: :ok, location: @app_environment_credential }
       else
         format.html { render :edit }
-        format.json { render json: @app_environment_credential.errors, status: :unprocessable_entity }
+        #format.json { render json: @app_environment_credential.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # DELETE /app_environment_credentials/1
   # DELETE /app_environment_credentials/1.json
-  def destroy
-    @app_environment_credential.destroy
-    respond_to do |format|
-      format.html { redirect_to app_environment_credentials_url, notice: 'App environment credential was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
+  #def destroy
+  #  @app_environment_credential.destroy
+  #  respond_to do |format|
+  #    format.html { redirect_to app_environment_credentials_url, notice: 'App environment credential was successfully destroyed.' }
+  #    format.json { head :no_content }
+  #  end
+  #end
 
   private
     # Use callbacks to share common setup or constraints between actions.

@@ -1,14 +1,12 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Listing App Credentials</h1>
+<h1><%=link_to @app.name, app_path(@app) %> Environment Variables</h1>
 
 <table>
   <thead>
     <tr>
-      <th>Credential</th>
-      <th>App</th>
-      <th>Encrypted value</th>
-      <th>Text value</th>
+      <th>Key</th>
+      <th>Value</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -16,11 +14,8 @@
   <tbody>
     <% @app_credentials.each do |app_credential| %>
       <tr>
-        <td><%= app_credential.credential_id %></td>
-        <td><%= app_credential.app_id %></td>
-        <td><%= app_credential.encrypted_value %></td>
+        <td><%= app_credential.key %></td>
         <td><%= app_credential.text_value %></td>
-        <td><%= link_to 'Show', app_credential %></td>
         <td><%= link_to 'Edit', edit_app_credential_path(app_credential) %></td>
         <td><%= link_to 'Destroy', app_credential, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
@@ -30,4 +25,4 @@
 
 <br>
 
-<%= link_to 'New App credential', new_app_credential_path %>
+<%= link_to 'New Environment Variable', new_app_credential_path(app_id: @app.id) %>

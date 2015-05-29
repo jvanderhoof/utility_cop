@@ -4,3 +4,22 @@ Create RDS instance
 Create EC2 from AMI
 Deploy code to EC2
 Add EC2 to ELB
+
+
+
+x] ability to add Env variables to a application resource
+ ] resources configurable per requirements (rds, ELB, etc.)
+
+
+Heroku app
+  has many add-ons (postgres, etc) - resources
+  has many dynos - application node - resource - deployable
+  has many workers - queue node - resource - deployable
+
+
+Created OAuth authorization.
+  Client:      <none>
+  ID:          654a52d8-e77a-4e69-9e88-c807dcb7f3ff
+  Description: Experimental API token
+  Scope:       global
+  Token:       df0cd925-bc2d-4ac7-8d46-d86f39e2877e

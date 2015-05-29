@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150419172806) do
+ActiveRecord::Schema.define(version: 20150523212842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "app_credentials", force: :cascade do |t|
     t.integer  "credential_id"
@@ -23,6 +24,7 @@ ActiveRecord::Schema.define(version: 20150419172806) do
     t.string   "text_value"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.string   "key"
   end
 
   create_table "app_environment_credentials", force: :cascade do |t|
@@ -32,6 +34,7 @@ ActiveRecord::Schema.define(version: 20150419172806) do
     t.string   "text_value"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+    t.integer  "app_credential_id"
   end
 
   create_table "app_environment_resources", force: :cascade do |t|
@@ -42,6 +45,8 @@ ActiveRecord::Schema.define(version: 20150419172806) do
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.string   "instance_type"
+    t.string   "type"
+    t.hstore   "settings"
   end
 
   add_index "app_environment_resources", ["app_environment_id"], name: "index_app_environment_resources_on_app_environment_id", using: :btree

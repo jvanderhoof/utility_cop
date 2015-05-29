@@ -28,6 +28,7 @@ gem 'attr_encrypted'
 gem 'sidekiq'
 gem 'aws-sdk'
 #gem 'fog-aws'
+gem 'platform-api'
 
 gem 'quiet_assets', group: :development
 gem 'sinatra', :require => nil
@@ -46,11 +47,15 @@ gem 'sinatra', :require => nil
 # add a Javascript runtime environment
 gem 'therubyracer'
 
-
+group :development do
+  gem 'pry-rails'
+  gem 'pry-byebug'
+end
 
 group :development, :test do
+  #gem 'pry-byebug'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
+  #gem 'byebug'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'

@@ -172,6 +172,10 @@ end
 
 
 namespace :play do
+  task :vpcs, [:environment] do
+    puts AwsEnvironment.vpcs.inspect
+  end
+
   task :packer_test, [:environment] do
     BuildPackerAmi.new('ruby-2.2.json').process
   end

@@ -1,6 +1,8 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  resources :vpcs
+
   mount Sidekiq::Web => '/sidekiq'
 
   resources :ami_builder, only: [:new, :create]
@@ -9,7 +11,7 @@ Rails.application.routes.draw do
 
   resources :app_credentials
 
-  resources :app_environment_credentials
+  resources :app_environment_credentials, only: [:edit, :update]
 
   resources :credentials
 

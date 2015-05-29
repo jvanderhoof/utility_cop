@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Vpcs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @vpcs.each do |vpc| %>
+      <tr>
+        <td><%= vpc.tags.find{|i| i.key == 'Name'}.value %></td>
+        <td><%#= link_to 'Show', vpc %></td>
+        <td><%#= link_to 'Edit', edit_vpc_path(vpc) %></td>
+        <td><%#= link_to 'Destroy', vpc, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Vpc', new_vpc_path %>

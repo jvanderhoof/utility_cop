@@ -1,8 +1,13 @@
 class AwsEnvironment < GenericAws
+  attr_reader :prefix
 
   def initialize(prefix)
-    self.prefix = prefix
+    @prefix = prefix
     route_table
+  end
+
+  def self.vpcs
+    ec2_client.describe_vpcs.vpcs
   end
 
   def vpc

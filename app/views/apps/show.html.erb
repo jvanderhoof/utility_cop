@@ -17,6 +17,8 @@
 
 <p><%= link_to('Environments', app_environments_path(app_id: @app)) %></p>
 <p><%= link_to('Resources', app_resources_path(app_id: @app)) %></p>
+<p><%= link_to('Environment Variables', app_credentials_path(app_id: @app)) %></p>
+
 
 <%= link_to 'Edit', edit_app_path(@app) %> |
 <%= link_to 'Back', apps_path %>

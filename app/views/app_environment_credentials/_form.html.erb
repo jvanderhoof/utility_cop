@@ -12,22 +12,17 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :credential_id %><br>
-    <%= f.number_field :credential_id %>
+    <%= f.label :credential_id %>: <%= @app_environment_credential.app_credential.key %>
   </div>
-  <div class="field">
-    <%= f.label :app_environment_id %><br>
-    <%= f.number_field :app_environment_id %>
-  </div>
-  <div class="field">
+  <!--<div class="field">
     <%= f.label :encrypted_value %><br>
     <%= f.text_field :encrypted_value %>
-  </div>
+  </div>-->
   <div class="field">
     <%= f.label :text_value %><br>
     <%= f.text_field :text_value %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit submit_button_message(@app_environment_credential) %>
   </div>
 <% end %>
