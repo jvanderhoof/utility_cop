@@ -8,6 +8,10 @@ class AppCredentialsController < ApplicationController
     @app_credentials = AppCredential.where(app_id: params[:app_id])
   end
 
+
+
+
+
   # GET /app_credentials/1
   # GET /app_credentials/1.json
   def show

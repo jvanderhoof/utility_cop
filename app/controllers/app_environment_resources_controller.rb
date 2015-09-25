@@ -5,6 +5,10 @@ class AppEnvironmentResourcesController < ApplicationController
   def edit
   end
 
+
+
+
+
   # PATCH/PUT /app_environment_resources/1
   # PATCH/PUT /app_environment_resources/1.json
   def update

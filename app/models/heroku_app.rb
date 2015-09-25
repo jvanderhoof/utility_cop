@@ -12,6 +12,10 @@ class HerokuApp < AppEnvironmentResource
     self.name = app_name
   end
 
+
+
+
+
   def app_info(app_name)
     begin
       @app_info ||= heroku.app.info(app_name)
